@@ -1,0 +1,18 @@
+[
+ {
+  "stage": "modal_stage1",
+  "cmds": [
+   [
+    "python -m pytest tests -q -p no:randomly -p no:cacheprovider",
+    0
+   ],
+   [
+    "python scripts/extract.py --model unsloth/Meta-Llama-3.1-8B-Instruct --batch 16",
+    0
+   ]
+  ],
+  "seconds": 87.86633276939392,
+  "est_usd": 0.02688709782743454,
+  "when": "2026-11-03 18:46"
+ }
+]
