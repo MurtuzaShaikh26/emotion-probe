@@ -280,9 +280,11 @@ Calibration: typical residual norm 78.8; breaking point f* = 0.3 (unsteered cali
 
 ## Judge validation
 
-Human validation pending: `results/human_labels.csv` not yet filled in.
+Hand labels by Murt (human) on 40 outputs: Spearman ρ = 0.61, mean |judge − rater| = 0.75 points, within ±1 point on 0.93 of items, mean (judge − rater) = 0.10; spread (SD) rater 1.83 vs judge 1.16. Task completion: agreement 1.00, Cohen's κ = – (n=40).
 
 Blind labels by Claude Opus 5.5 (a second LLM, **not** a human; it saw some outputs earlier while building F5, so it is not fully naive) on 40 outputs: Spearman ρ = 0.80, mean |judge − rater| = 1.10 points, within ±1 point on 0.85 of items, mean (judge − rater) = 1.10; spread (SD) rater 1.24 vs judge 1.16. Task completion: agreement 1.00, Cohen's κ = – (n=40).
+
+Human vs Claude labels (same 40 outputs): Spearman ρ = 0.57, mean |diff| = 1.00, within ±1 on 0.72, mean (Claude − human) = -1.00.
 
 ## Compute spend
 

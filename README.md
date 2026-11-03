@@ -78,9 +78,11 @@ emotional content produces is different and has little causal effect.
 - **Being able to read a concept is not the same as the model using it.** A probe finding a direction shows the
   information is *there*, not that the model relies on it. Steering is a stronger test, but adding a large vector
   is an unnatural thing to do to a model.
-- **One judge, and no human check yet.** Emotional intensity was scored by a single LLM, which may have its own
-  biases: it rates plain answers about 2/10 rather than 1/10. It was compared with a second LLM (Claude), not with
-  a human (Spearman 0.80 on 40 outputs). Human labels are still pending (`results/human_labels.csv`).
+- **One judge, checked against one human on 40 outputs.** Emotional intensity was scored by a single LLM. Against
+  hand labels on 40 outputs it agreed reasonably well: rank correlation 0.61, within 1 point 93% of the time, almost
+  no average bias. But it squeezes the extremes: an answer the human rated 10/10 got a lower score. So the judge
+  probably *understates* how strong the strongest steering effects are. One human and 40 outputs is a small check,
+  and most of those 40 outputs were not very emotional.
 - **Small datasets.** 150 D1 tasks, 150 D2 pairs and 60 steering prompts, all written for this project, and in
   English only. Confidence intervals are shown everywhere, but they do not cover how the prompts were written.
 - **Steering scale is a choice.** We set the strength range by where fluency breaks (perplexity tripling).

@@ -1681,6 +1681,19 @@
   ],
   "supported": false
  },
+ "judge_human_agreement": {
+  "rater": "human",
+  "n": 40,
+  "spearman": 0.6068201874695128,
+  "mean_abs_diff": 0.75,
+  "within1": 0.925,
+  "judge_minus_human_mean": 0.1,
+  "rater_sd": 1.8287632432876597,
+  "judge_sd": 1.1616260155488944,
+  "task_n": 40,
+  "task_agreement": 1.0,
+  "task_kappa": NaN
+ },
  "judge_claude_agreement": {
   "rater": "claude",
   "n": 40,

@@ -1,0 +1,7 @@
+{
+ "n": 40,
+ "spearman": 0.574481577202387,
+ "mean_abs_diff": 1.0,
+ "within1": 0.725,
+ "claude_minus_human_mean": -1.0
+}

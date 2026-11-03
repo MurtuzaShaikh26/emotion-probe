@@ -173,6 +173,11 @@ for rater in ("human", "claude"):
                   f"Task completion: agreement {f(a.get('task_agreement'))}, Cohen's κ = {f(a.get('task_kappa'))} (n={a.get('task_n')}).", ""]
     elif rater == "human":
         lines += ["Human validation pending: `results/human_labels.csv` not yet filled in.", ""]
+hc = RESULTS / "human_vs_claude_labels.json"
+if hc.exists():
+    a = json.loads(hc.read_text())
+    lines += [f"Human vs Claude labels (same {a['n']} outputs): Spearman ρ = {f(a['spearman'])}, mean |diff| = "
+              f"{f(a['mean_abs_diff'])}, within ±1 on {f(a['within1'])}, mean (Claude − human) = {f(a['claude_minus_human_mean'])}.", ""]
 costs = RESULTS / "costs.json"
 if costs.exists():
     cc = json.loads(costs.read_text())

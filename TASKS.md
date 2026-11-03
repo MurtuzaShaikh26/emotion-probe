@@ -43,7 +43,7 @@ Legend: [x] done · [ ] to do · [~] in progress · (M) = needs Murt
 - [x] Generate: 60 prompts × {D1, D2, D1-deconf, random} × c ∈ {±2, ±4, ±8} + c=0 baseline
 - [x] Perplexity under unsteered model; regex side effects
 - [x] (M) Judge (Fireworks — needs FIREWORKS_API_KEY; gpt-oss-120b, T=0, blind, shuffled)
-- [~] (M) Hand-label 40 outputs → judge–human agreement (Claude second-rater done; human labels pending)
+- [x] (M) Hand-label 40 outputs → judge–human agreement (+ Claude second-rater)
 - [x] Qwen replication of steering
 
 ## Stage 3 — Outputs

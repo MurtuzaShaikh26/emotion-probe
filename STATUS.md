@@ -19,8 +19,9 @@ _Last updated: 2026-11-03_
 - Pre-registered verdict: Llama "emotion direction", Qwen "mixed". Honest overall reading: **mixed**, i.e. an
   "act warm" style direction rather than a general emotion direction.
 
-## Open (optional, needs Murt)
-1. Human labels in `results/human_labels.csv` → rerun `analyze_steering.py` (both models) + `make_results.py`.
+## Judge validation
+Murt's 40 hand labels: judge Spearman 0.61, within ±1 on 93%, bias +0.10; judge compresses extremes.
+Nothing open.
 
 ## Spend
 Modal ≈ $0.15 of the $10 cap (`results/costs.json`). Fireworks ≈ $0.36 of the $8 cap (`results/judge_costs.json`).
