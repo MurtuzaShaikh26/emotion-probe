@@ -14,5 +14,17 @@
   "seconds": 87.86633276939392,
   "est_usd": 0.02688709782743454,
   "when": "2026-11-03 18:46"
+ },
+ {
+  "stage": "modal_stage2",
+  "cmds": [
+   [
+    "python scripts/run_steering.py --model unsloth/Meta-Llama-3.1-8B-Instruct --batch 60",
+    0
+   ]
+  ],
+  "seconds": 388.7976176738739,
+  "est_usd": 0.11897207100820542,
+  "when": "2026-11-03 19:02"
  }
 ]

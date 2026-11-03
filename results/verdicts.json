@@ -1,0 +1,60 @@
+{
+ "llama8b": {
+  "H1": {
+   "layers_checked": [
+    11,
+    32
+   ],
+   "n_layers_passing": 22,
+   "n_layers": 22,
+   "supported": true
+  },
+  "H2": {
+   "layer": 18,
+   "auroc": [
+    0.9619753086419753,
+    0.9288765432098766,
+    0.9881604938271604
+   ],
+   "supported": true,
+   "strength": "strong"
+  },
+  "H2_specific": {
+   "p_vs_random": 0.007992007992007992,
+   "p_vs_shuffled": 0.16283716283716285,
+   "irrelevant_frac_as_strong": 0.041666666666666664,
+   "supported": true
+  },
+  "steer_layer": 18,
+  "overall": "pending (steering not judged yet)"
+ },
+ "qwen3b": {
+  "H1": {
+   "layers_checked": [
+    12,
+    36
+   ],
+   "n_layers_passing": 25,
+   "n_layers": 25,
+   "supported": true
+  },
+  "H2": {
+   "layer": 24,
+   "auroc": [
+    0.8424691358024692,
+    0.7881358024691358,
+    0.9007407407407407
+   ],
+   "supported": true,
+   "strength": "strong"
+  },
+  "H2_specific": {
+   "p_vs_random": 0.11388611388611389,
+   "p_vs_shuffled": 0.24775224775224775,
+   "irrelevant_frac_as_strong": 0.375,
+   "supported": false
+  },
+  "steer_layer": 24,
+  "overall": "pending (steering not judged yet)"
+ }
+}

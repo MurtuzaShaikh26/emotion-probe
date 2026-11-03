@@ -2,35 +2,24 @@
 
 _Last updated: 2026-11-03_
 
-## Stage 0 — setup ✅
-Repo, CLAUDE.md, TASKS.md, .gitignore, `.env` template. Modal authenticated (profile `ronitk964`).
-Models: Qwen2.5-3B-Instruct (local, RTX 5060) and `unsloth/Meta-Llama-3.1-8B-Instruct` (Modal A10G; an ungated
-mirror, so **no Hugging Face token needed**).
+## Done
+- **Setup:** Modal authenticated (`ronitk964`). Main model is `unsloth/Meta-Llama-3.1-8B-Instruct`, an ungated mirror, so **no HF token is needed**.
+- **Data:** 2,090 rows, topic-based splits, no leakage. The D2 length confound was found on the prototype and fixed (token-length AUROC now 0.52).
+- **Tests:** 12/12 pass locally on Qwen **and on Llama on Modal**, including exact c = 0 reproduction.
+- **Pre-registration:** `docs/PREREG.md` was committed before any results. Amendments 1–4 were committed before any Llama run.
+- **Stage 1 (reading), Llama and Qwen:** done. See `results/RESULTS.md`, `figures/F1_*`, `figures/F2_*`.
+- **Stage 2 generations:** Llama (Modal) and Qwen (local), 1,500 each, with perplexity and regex side effects. See `figures/F5_*`.
 
-## Stage 0.5 — data ✅
-`data/examples.jsonl` (2,090 rows), built by `scripts/build_datasets.py`; stats in `results/dataset_stats.json`.
-Topic-based splits; leakage + label checks pass (`tests/test_data.py`).
-**Data fix found on the prototype:** token count alone separated D2 emotional vs neutral (AUROC 0.79 by words).
-Neutral texts were rewritten so every pair is within ±1 token. Token-length AUROC is now 0.52
-(`scripts/check_lengths.py`, PREREG amendment 3).
+## Headline so far (Llama, steering layer j* = 18; full numbers in results/RESULTS.md)
+- **H1 supported.** D1 is ~100% decodable mid-to-late, but so is it from the text alone (TF-IDF: 1.00). A probe can also name which paraphrase was used (0.98), and the control task reaches 0.78.
+- **H2 supported; H2-specific supported.** D1→D2 AUROC is 0.96 [0.93, 0.99] and beats random directions (p = 0.008), but it does not beat label-shuffled D1 directions (p = 0.16). Some irrelevant contrasts (instruction present vs absent) separate D2 just as well.
+- **Negation test:** the D1 direction follows instruction *meaning*, not tone words (1.00).
+- **Deconfounding** barely changes transfer: 0.96 → 0.92.
+- **Steering:** the D1 direction visibly makes text gushier at +4/+8; the D2 direction barely changes Llama's text at ±4.
 
-## Stage 0.75 — prototype + unit tests ✅
-12/12 tests pass locally (Qwen) **and on Llama on Modal**: hook shapes, hooks == HF hidden_states, token position,
-batch/padding invariance and row alignment, exact c=0 reproduction under greedy decoding, exact vector addition,
-perplexity sanity.
-
-## Stage 0.9 — pre-registration ✅
-`docs/PREREG.md`, committed before any results were viewed (commit 0236ee0). Amendments 1–4 were committed
-before any Llama run (a35761f): a control-task fix, a length baseline, D2 length re-matching, and a
-transfer-specificity test vs random directions.
-
-## Stage 1 — reading
-- Qwen (replication): done. `results/qwen3b/probe_metrics.json`.
-- Llama: activations extracted on Modal (88 s A10G ≈ $0.03); probe analysis running locally.
-
-## Stage 2 — steering
-- Qwen: 1,500 generations done locally (`results/qwen3b/generations.jsonl`). Judge blocked on FIREWORKS_API_KEY.
-- Llama: waiting on Stage 1 → steering layer → Modal stage 2.
+## Blocked on Murt
+1. FIREWORKS_API_KEY in `.env` → judge (H3/H4, F3, F4).
+2. Hand labels in `results/human_labels.csv` → judge validation.
 
 ## Spend
-Modal ≈ $0.03 so far (`results/costs.json`). Fireworks $0.
+Modal ≈ $0.15 of the $10 cap (`results/costs.json`). Fireworks: $0 so far.

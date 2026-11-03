@@ -123,22 +123,23 @@ def f5(S, c=4, vector="d1"):
     order = [g for g in load_jsonl(Path(__file__).resolve().parents[1] / "data/examples.jsonl") if g["dataset"] == "steer"]
     first3 = [e["id"] for e in order[:3]]  # fixed rule: first 3 steering prompts in dataset order
     get = {(g["prompt_id"], g["vector"], g["c"]): g for g in gens}
-    fig, axes = plt.subplots(3, 3, figsize=(15, 10.5))
+    fig, axes = plt.subplots(3, 3, figsize=(15, 8.2))
     for r, pid in enumerate(first3):
         for k, cc in enumerate((-c, 0, c)):
             g = get[(pid, "none", 0)] if cc == 0 else get[(pid, vector, cc)]
             ax = axes[r, k]; ax.axis("off")
             txt = g["text"].replace("\n", " ")
             txt = txt if len(txt) <= 420 else txt[:420] + " […]"
-            ax.text(0, 1, "\n".join(textwrap.wrap(txt, 58)), va="top", ha="left", fontsize=8.2, color=INK,
+            ax.text(0, 0.86, "\n".join(textwrap.wrap(txt, 58)), va="top", ha="left", fontsize=8.2, color=INK,
                     family="DejaVu Sans", transform=ax.transAxes)
             if r == 0:
-                ax.set_title(f"c = {cc:+d}" + ("  (unsteered)" if cc == 0 else ""), fontsize=11, color=INK, loc="left")
-        axes[r, 0].annotate(f"Prompt: {g['request']}", (0, 1.07), xycoords="axes fraction", fontsize=9.5,
-                            color=INK2, fontweight="bold")
+                ax.text(0, 1.2, f"c = {cc:+d}" + ("  (unsteered)" if cc == 0 else ""), fontsize=12, color=INK,
+                        fontweight="bold", transform=ax.transAxes)
+        axes[r, 0].text(0, 1.0, f"Prompt {r + 1}: {g['request']}", fontsize=9.5, color=INK2, fontweight="bold",
+                        style="italic", transform=axes[r, 0].transAxes)
     fig.suptitle(f"F5 · First 3 held-out prompts (fixed rule), steered with the {VEC_STYLE[vector][3]} at c = ±{c} · "
                  f"{NAMES[S]} · greedy, 128 tokens, text truncated for display", x=0.01, ha="left", fontsize=11, color=INK)
-    fig.subplots_adjust(hspace=0.35, wspace=0.08)
+    fig.subplots_adjust(top=0.88, hspace=0.25, wspace=0.08)
     save(fig, f"F5_qualitative_{vector}_c{c}_{S}")
 
 

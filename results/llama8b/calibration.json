@@ -1,0 +1,92 @@
+{
+ "layer": 18,
+ "typical_norm": 9.93754768371582,
+ "base_ppl": 1.1766173839569092,
+ "base_distinct2": 0.9514127357843284,
+ "base_example": "Photosynthesis is a vital process by which plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of organic compounds, such as glucose. This process is es",
+ "rows": [
+  {
+   "frac": 0.05,
+   "ppl_+1": 1.1828935742378235,
+   "distinct2_+1": 0.9566413737278001,
+   "example_+1": "Photosynthesis is a vital process by which plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of organic compounds, such as glucose. This process is es",
+   "ppl_-1": 1.1769855499267579,
+   "distinct2_-1": 0.9551029229703139,
+   "example_-1": "Photosynthesis is a vital biological process that occurs in plants, algae, and some bacteria. It's the process by which these organisms convert light energy from the sun into chemical energy in the fo",
+   "broken": false
+  },
+  {
+   "frac": 0.1,
+   "ppl_+1": 1.185590648651123,
+   "distinct2_+1": 0.9390067517294408,
+   "example_+1": "Photosynthesis is the process by which plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of organic compounds, such as glucose. This process is essent",
+   "ppl_-1": 1.171667742729187,
+   "distinct2_-1": 0.9564414996767938,
+   "example_-1": "Photosynthesis is a vital biological process that occurs in plants, algae, and some bacteria. It is the process by which these organisms convert light energy from the sun into chemical energy in the f",
+   "broken": false
+  },
+  {
+   "frac": 0.2,
+   "ppl_+1": 1.2308272838592529,
+   "distinct2_+1": 0.9452764365264364,
+   "example_+1": "Photosynthesis is the process by which plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of organic compounds, such as glucose. This process is essent",
+   "ppl_-1": 1.2309660196304322,
+   "distinct2_-1": 0.9395236299648065,
+   "example_-1": "Photosynthesis is a complex biological process that occurs in plants, algae, and some bacteria. It is the primary mechanism by which these organisms convert light energy from the sun into chemical ene",
+   "broken": false
+  },
+  {
+   "frac": 0.3,
+   "ppl_+1": 1.3411871671676636,
+   "distinct2_+1": 0.9410941386486605,
+   "example_+1": "Photosynthesis is the process by which plants, algae, and some bacteria convert light energy from the sun into chemical energy in the form of organic compounds, such as glucose. This process is essent",
+   "ppl_-1": 1.2942010641098023,
+   "distinct2_-1": 0.9481136389815635,
+   "example_-1": "Photosynthesis is a complex biological process that occurs in plants, algae, and some bacteria. It is the primary method by which these organisms produce energy and organic compounds from sunlight, wa",
+   "broken": false
+  },
+  {
+   "frac": 0.4,
+   "ppl_+1": 1.6043601989746095,
+   "distinct2_+1": 0.9517241212579959,
+   "example_+1": "Photosynthesis is the magical process by which plants, algae, and some bacteria convert sunlight, water, and carbon dioxide into glucose (a type of sugar) and oxygen. This incredible process is the ba",
+   "ppl_-1": 1.370548701286316,
+   "distinct2_-1": 0.9417892184218506,
+   "example_-1": "Photosynthesis is a complex biological process that occurs in plants, algae, and some bacteria. It is the primary method by which these organisms produce energy and organic compounds from inorganic su",
+   "broken": false
+  },
+  {
+   "frac": 0.5,
+   "ppl_+1": 2.096193528175354,
+   "distinct2_+1": 0.9439578411527576,
+   "example_+1": "Photosynthesis is the magical process by which plants, algae, and some bacteria make their own food from sunlight! It's like a superpower that helps them grow and thrive. Let me break it down for you:",
+   "ppl_-1": 1.488482403755188,
+   "distinct2_-1": 0.938510990037817,
+   "example_-1": "Photosynthesis is a complex biological process that occurs in plants, algae, and some bacteria. It is the primary method by which these organisms convert light energy from the sun into chemical energy",
+   "broken": false
+  },
+  {
+   "frac": 0.6,
+   "ppl_+1": 3.4261382460594176,
+   "distinct2_+1": 0.957739549790453,
+   "example_+1": "I'd be happy to explain photosynthesis in a way that's easy to understand!\n\n**What is photosynthesis?**\n\nPhotosynthesis is the magical process by which plants, algae, and some types of bacteria make t",
+   "ppl_-1": 1.7368054628372191,
+   "distinct2_-1": 0.9507746776787563,
+   "example_-1": "Photosynthesis is a complex biological process that occurs in plants, algae, and some bacteria. It is the primary method by which these organisms convert light energy from the sun into chemical energy",
+   "broken": false
+  },
+  {
+   "frac": 0.8,
+   "ppl_+1": 5.519796442985535,
+   "distinct2_+1": 0.9537826903978044,
+   "example_+1": "I'm happy to explain photosynthesis in a way that's easy to understand!\n\n**What is photosynthesis?**\n\nPhotosynthesis is like a magic power that plants have! It's a way that they can turn the sunlight ",
+   "ppl_-1": 2.6236654996871946,
+   "distinct2_-1": 0.9440886436296092,
+   "example_-1": "Photosynthesis is a biological process that occurs in plants, algae, and some bacteria. It is a complex process that involves the conversion of light energy from the sun into chemical energy in the fo",
+   "broken": true
+  }
+ ],
+ "f_star": 0.8,
+ "unit": 0.993754768371582,
+ "rule": "c=8 <-> f* x typical norm (PREREG)"
+}
