@@ -7,7 +7,7 @@ Legend: [x] done · [ ] to do · [~] in progress · (M) = needs Murt
 - [x] Write this task list
 - [x] git init + remote; .gitignore; .env template
 - [x] Modal CLI installed and token verified (profile ronitk964)
-- [ ] (M) FIREWORKS_API_KEY in .env
+- [x] (M) FIREWORKS_API_KEY in .env
 - [x] First push to GitHub
 
 ## Stage 0.5 — Data
@@ -42,15 +42,15 @@ Legend: [x] done · [ ] to do · [~] in progress · (M) = needs Murt
 - [x] Choose layer by pre-registered rule; calibrate scale
 - [x] Generate: 60 prompts × {D1, D2, D1-deconf, random} × c ∈ {±2, ±4, ±8} + c=0 baseline
 - [x] Perplexity under unsteered model; regex side effects
-- [ ] (M) Judge (Fireworks — needs FIREWORKS_API_KEY; gpt-oss-120b, T=0, blind, shuffled)
-- [ ] (M) Hand-label 40 outputs → judge–human agreement
+- [x] (M) Judge (Fireworks — needs FIREWORKS_API_KEY; gpt-oss-120b, T=0, blind, shuffled)
+- [~] (M) Hand-label 40 outputs → judge–human agreement (Claude second-rater done; human labels pending)
 - [x] Qwen replication of steering
 
 ## Stage 3 — Outputs
-- [~] F1–F5 (PNG + PDF, 300 dpi) — F1, F2, F5 done; F3/F4 need judge scores
-- [ ] results/RESULTS.md (generated) + JSON metrics + JSONL generations
-- [ ] docs/SUMMARY.md (≤15 lines)
-- [ ] README.md (plain language, limitations)
+- [x] F1–F5 (PNG + PDF, 300 dpi)
+- [x] results/RESULTS.md (generated) + JSON metrics + JSONL generations
+- [x] docs/SUMMARY.md (≤15 lines)
+- [x] README.md (plain language, limitations)
 
 ## Extra (found along the way)
 - [x] D2 length confound found + fixed (PREREG amendment 3)

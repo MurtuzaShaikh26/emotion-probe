@@ -159,14 +159,20 @@ for S in ("llama8b", "qwen3b"):
                 lines.append(f"| {name} | " + " | ".join(ci(sm["contrasts_emotion"][f"{name}@{c:+d}"]) for c in CS if c) + " |")
             lines.append("")
 
-agr = RESULTS / "judge_human_agreement.json"
 lines += ["## Judge validation", ""]
-if agr.exists():
-    a = json.loads(agr.read_text())
-    lines += [f"Hand labels by Murt on {a['n']} outputs: Spearman ρ = {f(a['spearman'])}, mean |judge − human| = {f(a['mean_abs_diff'])} points, "
-              f"mean (judge − human) = {f(a['judge_minus_human_mean'])}. Task completion: agreement {f(a.get('task_agreement'))}, Cohen's κ = {f(a.get('task_kappa'))} (n={a.get('task_n')}).", ""]
-else:
-    lines += ["Pending: `results/human_labels.csv` not yet filled in.", ""]
+RATER_DESC = {"human": "Hand labels by Murt (human)",
+              "claude": "Blind labels by Claude Opus 5.5 (a second LLM, **not** a human; it saw some outputs earlier "
+                        "while building F5, so it is not fully naive)"}
+for rater in ("human", "claude"):
+    agr = RESULTS / f"judge_{rater}_agreement.json"
+    if agr.exists():
+        a = json.loads(agr.read_text())
+        lines += [f"{RATER_DESC[rater]} on {a['n']} outputs: Spearman ρ = {f(a['spearman'])}, mean |judge − rater| = "
+                  f"{f(a['mean_abs_diff'])} points, within ±1 point on {f(a['within1'])} of items, mean (judge − rater) = "
+                  f"{f(a['judge_minus_human_mean'])}; spread (SD) rater {f(a['rater_sd'])} vs judge {f(a['judge_sd'])}. "
+                  f"Task completion: agreement {f(a.get('task_agreement'))}, Cohen's κ = {f(a.get('task_kappa'))} (n={a.get('task_n')}).", ""]
+    elif rater == "human":
+        lines += ["Human validation pending: `results/human_labels.csv` not yet filled in.", ""]
 costs = RESULTS / "costs.json"
 if costs.exists():
     cc = json.loads(costs.read_text())

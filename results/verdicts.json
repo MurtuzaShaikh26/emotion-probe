@@ -26,7 +26,29 @@
    "supported": true
   },
   "steer_layer": 18,
-  "overall": "pending (steering not judged yet)"
+  "H3": {
+   "diff_d1_minus_random": [
+    0.9,
+    0.6495833333333334,
+    1.15
+   ],
+   "task_completion_d1": 1.0,
+   "supported": true
+  },
+  "H4": {
+   "diff_d2_minus_d1": [
+    -0.8833333333333333,
+    -1.1333333333333333,
+    -0.6333333333333333
+   ],
+   "diff_d2_minus_random": [
+    0.016666666666666666,
+    -0.11666666666666667,
+    0.16666666666666666
+   ],
+   "supported": false
+  },
+  "overall": "emotion direction"
  },
  "qwen3b": {
   "H1": {
@@ -55,6 +77,28 @@
    "supported": false
   },
   "steer_layer": 24,
-  "overall": "pending (steering not judged yet)"
+  "H3": {
+   "diff_d1_minus_random": [
+    1.3666666666666667,
+    1.1,
+    1.65
+   ],
+   "task_completion_d1": 1.0,
+   "supported": true
+  },
+  "H4": {
+   "diff_d2_minus_d1": [
+    -0.9,
+    -1.15,
+    -0.6666666666666666
+   ],
+   "diff_d2_minus_random": [
+    0.4666666666666667,
+    0.26666666666666666,
+    0.7
+   ],
+   "supported": false
+  },
+  "overall": "mixed"
  }
 }

@@ -83,9 +83,11 @@ if n_judged:
     res["H4"] = dict(diff_d2_minus_d1=d21, diff_d2_minus_random=d2r,
                      supported=bool(d21[1] > -1.0 and d2r[1] > 0))
 
-# judge-human agreement, if Murt's labels exist
-hl, key = RESULTS / "human_labels.csv", RESULTS / "human_labels_key.json"
-if hl.exists() and key.exists():
+# judge vs second-rater agreement: Murt's hand labels (human) and/or Claude Opus 5.5's blind labels (an LLM, not human)
+key = RESULTS / "human_labels_key.json"
+for rater, hl in (("human", RESULTS / "human_labels.csv"), ("claude", RESULTS / "claude_labels.csv")):
+    if not (hl.exists() and key.exists()):
+        continue
     kmap = json.loads(key.read_text())
     allj = {}
     for s_ in ("llama8b", "qwen3b"):
@@ -104,15 +106,16 @@ if hl.exists() and key.exists():
                 ht.append(t[:1] == "y"); jt.append(bool(allj[gid]["task_completed"]))
     if len(he) >= 5:
         he, je = np.array(he), np.array(je)
-        agree = dict(n=len(he), spearman=float(spearmanr(he, je).correlation), mean_abs_diff=float(np.abs(he - je).mean()),
-                     judge_minus_human_mean=float((je - he).mean()))
+        agree = dict(rater=rater, n=len(he), spearman=float(spearmanr(he, je).correlation),
+                     mean_abs_diff=float(np.abs(he - je).mean()), within1=float((np.abs(he - je) <= 1).mean()),
+                     judge_minus_human_mean=float((je - he).mean()), rater_sd=float(he.std()), judge_sd=float(je.std()))
         if ht:
             ht, jt = np.array(ht), np.array(jt)
             po = float((ht == jt).mean())
             pe = float(ht.mean() * jt.mean() + (1 - ht.mean()) * (1 - jt.mean()))
             agree.update(task_n=len(ht), task_agreement=po, task_kappa=(po - pe) / (1 - pe) if pe < 1 else float("nan"))
-        (RESULTS / "judge_human_agreement.json").write_text(json.dumps(agree, indent=1))
-        res["judge_human_agreement"] = agree
+        (RESULTS / f"judge_{rater}_agreement.json").write_text(json.dumps(agree, indent=1))
+        res[f"judge_{rater}_agreement"] = agree
 
 (RESULTS / S / "steering_metrics.json").write_text(json.dumps(res, indent=1))
 print(f"{S}: {len(gens)} generations, {n_judged} judged")

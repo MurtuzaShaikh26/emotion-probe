@@ -108,7 +108,10 @@ def f4(S, sm):
     cs = [-8, -4, -2, 0, 2, 4, 8]
     fig, (a1, a2) = plt.subplots(1, 2, figsize=(12, 4.4))
     dose_plot(a1, sm, "log_ppl", cs, transform=np.exp)
-    a1.set_yscale("log"); a1.set(xlabel="steering strength c", ylabel="perplexity under unsteered model (geo. mean)",
+    a1.set_yscale("log")
+    a1.yaxis.set_major_formatter(matplotlib.ticker.FormatStrFormatter("%g"))
+    a1.yaxis.set_minor_formatter(matplotlib.ticker.FormatStrFormatter("%g"))
+    a1.set(xlabel="steering strength c", ylabel="perplexity under unsteered model (geo. mean)",
                                  title="(a) Fluency cost")
     dose_plot(a2, sm, "task_completed", cs)
     a2.set(xlabel="steering strength c", ylabel="judge: task completed (rate)", ylim=(0, 1.05), title="(b) Task completion")

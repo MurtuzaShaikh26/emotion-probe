@@ -1,0 +1,13 @@
+{
+ "rater": "claude",
+ "n": 40,
+ "spearman": 0.7996465620605245,
+ "mean_abs_diff": 1.1,
+ "within1": 0.85,
+ "judge_minus_human_mean": 1.1,
+ "rater_sd": 1.2427288521636568,
+ "judge_sd": 1.1616260155488944,
+ "task_n": 40,
+ "task_agreement": 1.0,
+ "task_kappa": NaN
+}

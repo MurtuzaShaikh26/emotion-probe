@@ -13,8 +13,9 @@ Pre-registered tests: H1, H2, H2-specific (amendment 4), H3, H4. **Everything el
 - **H1** (D1 decodable mid-to-late): SUPPORTED — 22/22 layers in j∈[11,32] have both direction and probe held-out accuracy with CI lower bound > 0.80.
 - **H2** (D1→D2 transfer above chance, j* = 18): SUPPORTED — AUROC 0.96 [0.93, 0.99] (strong).
 - **H2-specific** (beats random directions): SUPPORTED — one-sided p = 0.008 vs 1000 random directions; p = 0.163 vs 1000 label-shuffled D1 directions (exploratory); 4% of 24 irrelevant-contrast directions separate D2 at least as strongly (sign ignored).
-- **H3/H4**: pending (generations not yet judged).
-- **Overall (pre-registered rule):** pending (steering not judged yet)
+- **H3** (D1 steering > random at c=+4, task completion ≥ 0.70): SUPPORTED — emotion difference D1 − random = 0.90 [0.65, 1.15]; D1 task completion = 1.00.
+- **H4** (D2 steers at least as well as D1): NOT supported — D2 − D1 = -0.88 [-1.13, -0.63] (needs lower bound > −1); D2 − random = 0.02 [-0.12, 0.17].
+- **Overall (pre-registered rule):** emotion direction
 
 ### Stage 1: per-layer reading results (exploratory detail)
 
@@ -63,9 +64,27 @@ Format/paraphrase/instruction-presence subspace rank 12; share of the D1 directi
 | 16 | 0.92 [0.88, 0.97] | 1.00 [1.00, 1.00] |
 | full span (used for steering) | 0.92 [0.88, 0.97] | 1.00 [1.00, 1.00] |
 
-### Stage 2: steering (layer 18, α = c × 0.994, 60 prompts, 1500 generations, 0 judged)
+### Stage 2: steering (layer 18, α = c × 0.994, 60 prompts, 1500 generations, 1500 judged)
 
 Calibration: typical residual norm 9.9; breaking point f* = 0.8 (unsteered calibration perplexity 1.18); so c = ±8 ↔ 0.8 × typical norm.
+
+**Judge emotional intensity (1–10)** (mean [95% CI over prompts])
+
+| vector | c=-8 | c=-4 | c=-2 | c=+0 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|---|
+| d1 | 1.97 [1.88, 2.05] | 2.02 [1.95, 2.08] | 2.05 [1.98, 2.13] | 2.23 [2.12, 2.37] | 2.45 [2.30, 2.63] | 3.15 [2.90, 3.40] | 6.33 [6.07, 6.58] |
+| d2 | 2.05 [1.98, 2.13] | 2.12 [2.02, 2.22] | 2.17 [2.07, 2.30] | 2.23 [2.12, 2.37] | 2.22 [2.07, 2.37] | 2.27 [2.13, 2.43] | 2.72 [2.43, 3.02] |
+| d1_deconf | 1.88 [1.78, 1.98] | 1.95 [1.87, 2.02] | 2.05 [1.98, 2.12] | 2.23 [2.12, 2.37] | 2.45 [2.30, 2.62] | 3.48 [3.17, 3.83] | 6.53 [6.27, 6.78] |
+| random | 2.25 [2.13, 2.38] | 2.27 [2.13, 2.42] | 2.23 [2.10, 2.38] | 2.23 [2.12, 2.37] | 2.27 [2.13, 2.42] | 2.25 [2.10, 2.42] | 2.22 [2.12, 2.33] |
+
+**Judge task completion rate** (mean [95% CI over prompts])
+
+| vector | c=-8 | c=-4 | c=-2 | c=+0 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|---|
+| d1 | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] |
+| d2 | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 0.90 [0.82, 0.97] |
+| d1_deconf | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] |
+| random | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] |
 
 **Perplexity under unsteered model (geometric mean)** (mean [95% CI over prompts])
 
@@ -75,6 +94,15 @@ Calibration: typical residual norm 9.9; breaking point f* = 0.8 (unsteered calib
 | d2 | 1.57 [1.52, 1.62] | 1.25 [1.23, 1.27] | 1.21 [1.19, 1.23] | 1.19 [1.18, 1.21] | 1.21 [1.20, 1.23] | 1.27 [1.24, 1.29] | 2.21 [1.83, 2.75] |
 | d1_deconf | 1.94 [1.87, 2.02] | 1.34 [1.32, 1.36] | 1.23 [1.22, 1.25] | 1.19 [1.18, 1.21] | 1.24 [1.22, 1.26] | 1.50 [1.45, 1.57] | 4.05 [3.76, 4.32] |
 | random | 1.40 [1.37, 1.44] | 1.24 [1.22, 1.25] | 1.21 [1.19, 1.23] | 1.19 [1.18, 1.21] | 1.20 [1.19, 1.22] | 1.24 [1.22, 1.26] | 1.39 [1.36, 1.42] |
+
+**Judge refusal rate** (mean [95% CI over prompts])
+
+| vector | c=-8 | c=-4 | c=-2 | c=+0 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|---|
+| d1 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
+| d2 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.10 [0.03, 0.18] |
+| d1_deconf | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
+| random | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
 
 **Regex refusal rate** (mean [95% CI over prompts])
 
@@ -103,6 +131,16 @@ Calibration: typical residual norm 9.9; breaking point f* = 0.8 (unsteered calib
 | d1_deconf | 0.90 [0.82, 0.97] | 0.85 [0.75, 0.93] | 0.87 [0.78, 0.95] | 0.85 [0.75, 0.93] | 0.83 [0.73, 0.92] | 0.65 [0.53, 0.77] | 0.23 [0.13, 0.33] |
 | random | 0.83 [0.75, 0.92] | 0.88 [0.80, 0.97] | 0.87 [0.78, 0.95] | 0.85 [0.75, 0.93] | 0.83 [0.73, 0.92] | 0.78 [0.67, 0.88] | 0.75 [0.63, 0.87] |
 
+**Paired emotion contrasts** (difference in judge score, 95% CI over prompts)
+
+| contrast | c=-8 | c=-4 | c=-2 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|
+| d1-random | -0.28 [-0.43, -0.13] | -0.25 [-0.42, -0.10] | -0.18 [-0.32, -0.07] | 0.18 [0.05, 0.33] | 0.90 [0.65, 1.15] | 4.12 [3.82, 4.40] |
+| d2-random | -0.20 [-0.33, -0.07] | -0.15 [-0.30, 0.00] | -0.07 [-0.17, 0.03] | -0.05 [-0.17, 0.07] | 0.02 [-0.12, 0.17] | 0.50 [0.22, 0.82] |
+| d1_deconf-random | -0.37 [-0.52, -0.23] | -0.32 [-0.48, -0.17] | -0.18 [-0.30, -0.08] | 0.18 [0.05, 0.33] | 1.23 [0.92, 1.60] | 4.32 [4.02, 4.58] |
+| d2-d1 | 0.08 [-0.03, 0.20] | 0.10 [-0.02, 0.22] | 0.12 [0.03, 0.22] | -0.23 [-0.38, -0.10] | -0.88 [-1.13, -0.63] | -3.62 [-4.00, -3.23] |
+| d1_deconf-d1 | -0.08 [-0.20, 0.03] | -0.07 [-0.15, 0.00] | 0.00 [-0.08, 0.08] | 0.00 [-0.10, 0.10] | 0.33 [0.05, 0.65] | 0.20 [-0.05, 0.43] |
+
 ## Qwen2.5-3B-Instruct (replication)
 
 36 blocks, d_model = 2048. Residual index j = 0 is the embeddings, j = i+1 is the output of block i.
@@ -112,8 +150,9 @@ Calibration: typical residual norm 9.9; breaking point f* = 0.8 (unsteered calib
 - **H1** (D1 decodable mid-to-late): SUPPORTED — 25/25 layers in j∈[12,36] have both direction and probe held-out accuracy with CI lower bound > 0.80.
 - **H2** (D1→D2 transfer above chance, j* = 24): SUPPORTED — AUROC 0.84 [0.79, 0.90] (strong).
 - **H2-specific** (beats random directions): NOT supported — one-sided p = 0.114 vs 1000 random directions; p = 0.248 vs 1000 label-shuffled D1 directions (exploratory); 38% of 24 irrelevant-contrast directions separate D2 at least as strongly (sign ignored).
-- **H3/H4**: pending (generations not yet judged).
-- **Overall (pre-registered rule):** pending (steering not judged yet)
+- **H3** (D1 steering > random at c=+4, task completion ≥ 0.70): SUPPORTED — emotion difference D1 − random = 1.37 [1.10, 1.65]; D1 task completion = 1.00.
+- **H4** (D2 steers at least as well as D1): NOT supported — D2 − D1 = -0.90 [-1.15, -0.67] (needs lower bound > −1); D2 − random = 0.47 [0.27, 0.70].
+- **Overall (pre-registered rule):** mixed
 
 ### Stage 1: per-layer reading results (exploratory detail)
 
@@ -162,9 +201,27 @@ Format/paraphrase/instruction-presence subspace rank 12; share of the D1 directi
 | 16 | 0.68 [0.61, 0.77] | 1.00 [1.00, 1.00] |
 | full span (used for steering) | 0.68 [0.61, 0.77] | 1.00 [1.00, 1.00] |
 
-### Stage 2: steering (layer 24, α = c × 2.955, 60 prompts, 1500 generations, 0 judged)
+### Stage 2: steering (layer 24, α = c × 2.955, 60 prompts, 1500 generations, 1500 judged)
 
 Calibration: typical residual norm 78.8; breaking point f* = 0.3 (unsteered calibration perplexity 1.40); so c = ±8 ↔ 0.3 × typical norm.
+
+**Judge emotional intensity (1–10)** (mean [95% CI over prompts])
+
+| vector | c=-8 | c=-4 | c=-2 | c=+0 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|---|
+| d1 | 1.95 [1.88, 2.02] | 2.03 [1.97, 2.10] | 2.07 [2.00, 2.15] | 2.25 [2.13, 2.38] | 2.80 [2.57, 3.05] | 3.57 [3.30, 3.87] | 6.57 [6.33, 6.80] |
+| d2 | 2.10 [2.00, 2.23] | 2.17 [2.07, 2.28] | 2.12 [2.05, 2.20] | 2.25 [2.13, 2.38] | 2.35 [2.22, 2.50] | 2.67 [2.45, 2.90] | 4.50 [4.17, 4.82] |
+| d1_deconf | 2.00 [1.93, 2.07] | 2.02 [1.97, 2.07] | 2.13 [2.05, 2.23] | 2.25 [2.13, 2.38] | 2.60 [2.40, 2.82] | 3.25 [3.00, 3.50] | 5.50 [5.18, 5.83] |
+| random | 2.33 [2.18, 2.50] | 2.27 [2.12, 2.45] | 2.27 [2.15, 2.40] | 2.25 [2.13, 2.38] | 2.23 [2.13, 2.37] | 2.20 [2.10, 2.32] | 2.15 [2.07, 2.25] |
+
+**Judge task completion rate** (mean [95% CI over prompts])
+
+| vector | c=-8 | c=-4 | c=-2 | c=+0 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|---|
+| d1 | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] |
+| d2 | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 0.55 [0.43, 0.68] |
+| d1_deconf | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] |
+| random | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] | 1.00 [1.00, 1.00] |
 
 **Perplexity under unsteered model (geometric mean)** (mean [95% CI over prompts])
 
@@ -174,6 +231,15 @@ Calibration: typical residual norm 78.8; breaking point f* = 0.3 (unsteered cali
 | d2 | 1.81 [1.76, 1.86] | 1.57 [1.53, 1.61] | 1.50 [1.46, 1.54] | 1.48 [1.44, 1.51] | 1.53 [1.49, 1.56] | 1.63 [1.58, 1.68] | 4.27 [3.81, 4.78] |
 | d1_deconf | 1.94 [1.88, 2.02] | 1.58 [1.54, 1.62] | 1.50 [1.46, 1.54] | 1.48 [1.44, 1.51] | 1.51 [1.48, 1.55] | 1.66 [1.61, 1.71] | 2.66 [2.53, 2.79] |
 | random | 1.77 [1.72, 1.83] | 1.56 [1.51, 1.61] | 1.50 [1.46, 1.54] | 1.48 [1.44, 1.51] | 1.48 [1.45, 1.52] | 1.52 [1.48, 1.56] | 1.71 [1.66, 1.75] |
+
+**Judge refusal rate** (mean [95% CI over prompts])
+
+| vector | c=-8 | c=-4 | c=-2 | c=+0 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|---|
+| d1 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
+| d2 | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.23 [0.13, 0.35] |
+| d1_deconf | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
+| random | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] | 0.00 [0.00, 0.00] |
 
 **Regex refusal rate** (mean [95% CI over prompts])
 
@@ -202,10 +268,24 @@ Calibration: typical residual norm 78.8; breaking point f* = 0.3 (unsteered cali
 | d1_deconf | 0.97 [0.92, 1.00] | 0.98 [0.95, 1.00] | 0.97 [0.92, 1.00] | 0.82 [0.72, 0.92] | 0.65 [0.53, 0.77] | 0.45 [0.33, 0.58] | 0.23 [0.13, 0.35] |
 | random | 0.73 [0.62, 0.83] | 0.80 [0.70, 0.90] | 0.82 [0.72, 0.90] | 0.82 [0.72, 0.92] | 0.82 [0.72, 0.92] | 0.73 [0.62, 0.85] | 0.72 [0.60, 0.83] |
 
+**Paired emotion contrasts** (difference in judge score, 95% CI over prompts)
+
+| contrast | c=-8 | c=-4 | c=-2 | c=+2 | c=+4 | c=+8 |
+|---|---|---|---|---|---|---|
+| d1-random | -0.38 [-0.57, -0.22] | -0.23 [-0.42, -0.08] | -0.20 [-0.32, -0.10] | 0.57 [0.37, 0.78] | 1.37 [1.10, 1.65] | 4.42 [4.15, 4.67] |
+| d2-random | -0.23 [-0.42, -0.05] | -0.10 [-0.28, 0.07] | -0.15 [-0.25, -0.07] | 0.12 [-0.02, 0.25] | 0.47 [0.27, 0.70] | 2.35 [1.98, 2.70] |
+| d1_deconf-random | -0.33 [-0.50, -0.18] | -0.25 [-0.43, -0.10] | -0.13 [-0.25, -0.03] | 0.37 [0.18, 0.57] | 1.05 [0.80, 1.30] | 3.35 [3.03, 3.68] |
+| d2-d1 | 0.15 [0.03, 0.30] | 0.13 [0.02, 0.27] | 0.05 [-0.02, 0.12] | -0.45 [-0.67, -0.25] | -0.90 [-1.15, -0.67] | -2.07 [-2.43, -1.70] |
+| d1_deconf-d1 | 0.05 [-0.02, 0.12] | -0.02 [-0.08, 0.03] | 0.07 [0.02, 0.13] | -0.20 [-0.33, -0.07] | -0.32 [-0.55, -0.08] | -1.07 [-1.38, -0.77] |
+
 ## Judge validation
 
-Pending: `results/human_labels.csv` not yet filled in.
+Human validation pending: `results/human_labels.csv` not yet filled in.
+
+Blind labels by Claude Opus 5.5 (a second LLM, **not** a human; it saw some outputs earlier while building F5, so it is not fully naive) on 40 outputs: Spearman ρ = 0.80, mean |judge − rater| = 1.10 points, within ±1 point on 0.85 of items, mean (judge − rater) = 1.10; spread (SD) rater 1.24 vs judge 1.16. Task completion: agreement 1.00, Cohen's κ = – (n=40).
 
 ## Compute spend
 
 Modal (own estimate from wall-clock × A10G list price): modal_stage1 88 s ≈ $0.027; modal_stage2 389 s ≈ $0.119. Total ≈ $0.15.
+
+Fireworks judge: 1,553,938 prompt + 213,049 completion tokens ≈ $0.36 at the assumed list price.
