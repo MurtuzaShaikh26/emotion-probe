@@ -1,0 +1,103 @@
+{
+  "counts": {
+    "d2/train": 210,
+    "d1/train": 200,
+    "d3_d1_mcq/train": 200,
+    "d3_d1_json/train": 200,
+    "d3_d1_plain/train": 200,
+    "d1/test": 100,
+    "d1neg/test": 100,
+    "d3_d1_mcq/test": 100,
+    "d3_d1_json/test": 100,
+    "d3_d1_plain/test": 100,
+    "d1nosys/train": 100,
+    "d2/test": 90,
+    "d3_d2_mcq/test": 90,
+    "d3_d2_json/test": 90,
+    "d3_d2_plain/test": 90,
+    "steer/eval": 60,
+    "d1nosys/test": 50,
+    "calib/calib": 10
+  },
+  "leakage": {
+    "d1": {
+      "n_train": 200,
+      "n_test": 100,
+      "train_topics": [
+        "biology",
+        "finance",
+        "fitness",
+        "geography",
+        "home",
+        "language",
+        "math",
+        "technology",
+        "travel",
+        "weather"
+      ],
+      "test_topics": [
+        "cooking",
+        "history",
+        "music",
+        "physics",
+        "programming"
+      ]
+    },
+    "d2": {
+      "n_train": 210,
+      "n_test": 90,
+      "train_topics": [
+        "accidents",
+        "aging",
+        "animals_wild",
+        "career",
+        "creative",
+        "family",
+        "food_events",
+        "holidays",
+        "home_life",
+        "housing",
+        "illness_others",
+        "loss_objects",
+        "money",
+        "nature",
+        "neighborhood",
+        "parenting",
+        "pets",
+        "school",
+        "self",
+        "technology_events",
+        "travel_events"
+      ],
+      "test_topics": [
+        "achievement",
+        "community",
+        "digital_life",
+        "friendship",
+        "health",
+        "legal",
+        "relationships",
+        "sports",
+        "work"
+      ]
+    },
+    "steer_n": 60
+  },
+  "d2": {
+    "n_pairs": 150,
+    "mean_words_emotional": 20.153333333333332,
+    "mean_words_neutral": 17.92,
+    "mean_pair_word_diff": 2.2333333333333334,
+    "max_abs_pair_word_diff": 8,
+    "instruction_vocab_hits": {
+      "0": 1,
+      "1": 1
+    },
+    "emotion_counts": {
+      "grief": 33,
+      "joy": 39,
+      "fear": 40,
+      "anger": 38
+    }
+  }
+}

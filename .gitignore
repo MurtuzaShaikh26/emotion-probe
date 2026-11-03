@@ -1,0 +1,11 @@
+.env
+*.env
+cache/
+logs/
+__pycache__/
+*.pyc
+.pytest_cache/
+*.pt
+*.npy
+*.npz
+.modal.toml

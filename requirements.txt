@@ -1,0 +1,12 @@
+torch>=2.6
+transformers>=4.45
+accelerate
+numpy
+scipy
+scikit-learn
+pandas
+matplotlib
+python-dotenv
+openai
+modal
+pytest
