@@ -86,9 +86,9 @@
   "d2": {
     "n_pairs": 150,
     "mean_words_emotional": 20.153333333333332,
-    "mean_words_neutral": 17.92,
-    "mean_pair_word_diff": 2.2333333333333334,
-    "max_abs_pair_word_diff": 8,
+    "mean_words_neutral": 21.266666666666666,
+    "mean_pair_word_diff": -1.1133333333333333,
+    "max_abs_pair_word_diff": 5,
     "instruction_vocab_hits": {
       "0": 1,
       "1": 1

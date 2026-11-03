@@ -86,6 +86,31 @@ bullet/numbered lists; Hewitt & Liang control task (labels assigned at random to
 strings) and selectivity = real − control accuracy; paraphrase-identity probe; leave-paraphrase-out accuracy;
 TF-IDF text-only baseline; negation test; D1–D2 cosine with a label-permutation null.
 
+## Amendments (made before any Llama run)
+1. **Control task types.** On the Qwen prototype, giving each of the 10 paraphrase strings a random label
+   produced control labels that agreed with the true labels on 80% of examples, so the control task borrowed real
+   signal. With 5 paraphrases per class, per-paraphrase labels can never be independent of the class. New rule:
+   a type = (paraphrase string, first word of the task, e.g. "Explain"); each type gets a fixed random label;
+   seeds are tried from 123 upward until agreement with the true labels on D1 train is within [0.45, 0.55] and
+   the label balance is within [0.4, 0.6]. Both type parts are visible in the input and occur in both splits, as in
+   Hewitt & Liang. This changes no hypothesis or threshold.
+2. **Length baseline** (exploratory addition): AUROC of prompt token count alone, plus D1→D2 transfer after
+   regressing token count out of the projection score.
+3. **D2 length re-matching (data change).** The Qwen prototype showed word count alone separated D2 emotional vs
+   neutral messages with AUROC 0.79, so "transfer" could have been a length detector. Before any Llama run, the
+   neutral side of 140 pairs was rewritten (same topic, still neutral) so every pair is within ±1 **token**
+   (Llama and Qwen tokenizers); token-length AUROC is now 0.52 (`scripts/check_lengths.py`). The emotional
+   messages, topics, splits and all hypotheses are unchanged. Qwen numbers from before this fix are discarded.
+4. **Transfer specificity test (added after seeing Qwen, before any Llama run).** On Qwen, D2 classes are so far
+   apart at the final token that *random* directions often separate them (95% band of random-direction AUROC
+   ≈ [0.08, 0.92] at late layers). So an AUROC CI above 0.5 is not, by itself, evidence that the D1 direction
+   carries emotion. H2 is kept exactly as stated, and a secondary pre-specified test is added for Llama:
+   **H2-specific** is supported if, at j*, the D1 direction's D2-test AUROC beats 1000 isotropic random directions
+   one-sided at p < 0.05 (`transfer_p_random`). Also reported: p vs 1000 label-shuffled D1 directions, and the
+   share of 24 irrelevant-contrast directions (topic, format, paraphrase, instruction presence) that separate
+   D2 at least as strongly (sign ignored). The overall verdict rule reads "H2 moderate/strong" as "H2 moderate/strong
+   AND H2-specific".
+
 ## Overall verdict rule (for the one-line summary)
 - "emotion direction": H2 moderate/strong AND H3 supported.
 - "mostly instruction detector": H2 not supported or weak, AND (H3 not supported OR D2 direction steers clearly

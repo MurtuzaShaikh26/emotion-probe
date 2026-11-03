@@ -1,0 +1,52 @@
+{
+ "layer": 24,
+ "typical_norm": 78.80479431152344,
+ "base_ppl": 1.3953877806663513,
+ "base_distinct2": 0.970870468587498,
+ "base_example": "Photosynthesis is a fundamental biological process that occurs in plants, algae, and some bacteria. It's the method by which these organisms convert light energy from the sun into chemical energy stor",
+ "rows": [
+  {
+   "frac": 0.05,
+   "ppl_+1": 1.412387239933014,
+   "distinct2_+1": 0.9646417009276451,
+   "example_+1": "Photosynthesis is a fundamental biological process that occurs in plants, algae, and some bacteria. It's the method by which these organisms convert light energy from the sun into chemical energy stor",
+   "ppl_-1": 1.4046119809150697,
+   "distinct2_-1": 0.9715621032534403,
+   "example_-1": "Photosynthesis is a fundamental biological process used by plants, algae, and certain bacteria to convert light energy from the sun into chemical energy stored in glucose or other sugars. This process",
+   "broken": false
+  },
+  {
+   "frac": 0.1,
+   "ppl_+1": 1.5919889211654663,
+   "distinct2_+1": 0.9760388705677838,
+   "example_+1": "Photosynthesis is a vital process used by plants, algae, and some bacteria to convert light energy from the sun into chemical energy stored in glucose or other sugars. This process is crucial for life",
+   "ppl_-1": 1.4511687636375428,
+   "distinct2_-1": 0.9889071311671931,
+   "example_-1": "Photosynthesis is a biological process used by plants, algae, and certain bacteria to convert light energy from the sun into chemical energy stored in glucose or other sugars. This process is fundamen",
+   "broken": false
+  },
+  {
+   "frac": 0.2,
+   "ppl_+1": 2.1626341462135317,
+   "distinct2_+1": 0.9591721651381471,
+   "example_+1": "Photosynthesis is a fascinating process that occurs in plants, algae, and some bacteria, where these organisms use sunlight to convert carbon dioxide (CO\u2082) from the air and water (H\u2082O) from the soil i",
+   "ppl_-1": 1.7390414953231812,
+   "distinct2_-1": 0.9741527478714703,
+   "example_-1": "Photosynthesis is a biochemical process used by plants, algae, and certain bacteria to convert light energy from the sun into chemical energy stored in molecules such as glucose. This process involves",
+   "broken": false
+  },
+  {
+   "frac": 0.3,
+   "ppl_+1": 4.910264587402343,
+   "distinct2_+1": 0.9605574448120591,
+   "example_+1": "Photosynthesis is an absolutely beautiful and fascinating process that happens in plants, algae, and some bacteria. It's like a magical dance between sunlight, water, and air, turning them into energy",
+   "ppl_-1": 2.115712833404541,
+   "distinct2_-1": 0.9481853045073578,
+   "example_-1": "Photosynthesis is a biochemical process used by plants, algae, and certain bacteria to convert light energy from the sun into chemical energy stored in molecules such as glucose. This process involves",
+   "broken": true
+  }
+ ],
+ "f_star": 0.3,
+ "unit": 2.955179786682129,
+ "rule": "c=8 <-> f* x typical norm (PREREG)"
+}

@@ -15,7 +15,7 @@ from emoprobe.paths import DATA, CACHE, RESULTS, slug
 
 ap = argparse.ArgumentParser()
 ap.add_argument("--model", default="Qwen/Qwen2.5-3B-Instruct")
-ap.add_argument("--n-perm", type=int, default=200)
+ap.add_argument("--n-perm", type=int, default=1000)
 a = ap.parse_args()
 S = slug(a.model)
 t0 = time.time()
@@ -46,12 +46,22 @@ for src in ("d1", "d2"):
         EVAL_SETS[f"d3_{src}_{fmt}"] = sel(f"d3_{src}_{fmt}", "test")
 fmt_tr = {f: sel(f"d3_d1_{f}", "train") for f in ("mcq", "json", "plain")}
 
-# Hewitt & Liang-style control task: each of the 10 paraphrase STRINGS ("types") gets a fixed random label.
-rng = np.random.default_rng(123)
-perm = rng.permutation(10)
-ctrl_of_para = {int(p): int(i < 5) for i, p in enumerate(perm)}
-ctrl = np.array([ctrl_of_para.get(int(p), -1) for p in para])
+# Hewitt & Liang-style control task (PREREG amendment 1). A "type" = (paraphrase string, first word of the
+# task); both are visible in the input and occur in train AND test. Each type gets a fixed random label.
+# Seeds are tried in order until the control labels agree with the true labels on 45-55% of D1 train,
+# so the control task cannot borrow real signal.
+verb = np.array([e["user"].split()[0].lower() for e in ex])
+types = sorted({(int(p), str(v)) for p, v, e in zip(para, verb, ex) if e["dataset"] == "d1"})
+for ctrl_seed in range(123, 1123):
+    rng = np.random.default_rng(ctrl_seed)
+    ctrl_of_type = {t: int(rng.integers(0, 2)) for t in types}
+    ctrl = np.array([ctrl_of_type.get((int(p), str(v)), -1) for p, v in zip(para, verb)])
+    agree_tr = (ctrl[I["d1_tr"]] == lab[I["d1_tr"]]).mean()
+    bal_tr = ctrl[I["d1_tr"]].mean()
+    if 0.45 <= agree_tr <= 0.55 and 0.4 <= bal_tr <= 0.6:
+        break
 ctrl_agree = float((ctrl[I["d1_te"]] == lab[I["d1_te"]]).mean())
+ctrl_of_para = {f"{p}|{v}": l for (p, v), l in ctrl_of_type.items()}
 
 # leave-paraphrase-out: train on paraphrase slots {0,1,2}, test on slots {3,4}
 lpo_tr = I["d1_tr"][np.isin(para[I["d1_tr"]] % 5, [0, 1, 2])]
@@ -106,12 +116,27 @@ for j in range(J):
         tr_items = items[I["d1_tr"]]
         uniq, inv = np.unique(tr_items, return_inverse=True)
         prng = np.random.default_rng(j)
-        null = []
+        # NB: flipping labels *within* task pairs is not a valid null here: the result is a random +-1 sum of pair
+        # differences that all share the true direction, so it stays partly aligned with +-v1. Use a global shuffle.
+        null, null_au, rand_au = [], [], []
+        X2te, y2te = X[I["d2_te"]], lab[I["d2_te"]]
         for _ in range(a.n_perm):
-            flip = prng.integers(0, 2, len(uniq))[inv].astype(bool)
-            yp = np.where(flip, 1 - ytr, ytr)
-            null.append(P.cos(P.mean_diff(Xtr, yp), v2))
+            yp = prng.permutation(ytr)
+            vp = P.mean_diff(Xtr, yp)
+            null.append(P.cos(vp, v2))
+            null_au.append(P.auroc(X2te @ vp, y2te))
+            rand_au.append(P.auroc(X2te @ prng.standard_normal(D), y2te))
         R["cos_null_abs95"] = float(np.percentile(np.abs(null), 95))
+
+        def band(xs):
+            dev = float(np.percentile(np.abs(np.array(xs) - 0.5), 95))
+            return [0.5 - dev, 0.5 + dev]
+        R["transfer_null_shuffle95"] = band(null_au)
+        R["transfer_null_random95"] = band(rand_au)
+        # one-sided empirical p: how often does a null direction rank D2 emotional-above-neutral at least as well?
+        obs = P.auroc(X2te @ v1, y2te)
+        R["transfer_p_shuffle"] = float((1 + np.sum(np.array(null_au) >= obs)) / (1 + len(null_au)))
+        R["transfer_p_random"] = float((1 + np.sum(np.array(rand_au) >= obs)) / (1 + len(rand_au)))
     # --- deconfounding: format + paraphrase + instruction-presence subspace from D1 TRAIN only
     base = X[I["d1_tr"]].mean(0)
     vecs = [X[fmt_tr[f]].mean(0) - base for f in fmt_tr]
@@ -121,6 +146,19 @@ for j in range(J):
         for p in sorted(set(para[cls])):
             vecs.append(X[cls[para[cls] == p]].mean(0) - cm)
     vecs.append(base - X[I["nosys_tr"]].mean(0))
+    # irrelevant-contrast directions (exploratory specificity check): how well do non-emotion contrasts built from
+    # D1 data "transfer" to D2? Topic-vs-rest (10), format (3), paraphrase (10), instruction presence (1).
+    irr_names = [f"format:{f}" for f in fmt_tr] + [f"para:{c}:{p}" for c in (0, 1)
+                                                    for p in sorted(set(para[I["d1_tr"]][ytr == c]))] + ["presence"]
+    irr = list(vecs)
+    for tpc in sorted(set(topics[I["d1_tr"]])):
+        m = topics[I["d1_tr"]] == tpc
+        irr.append(Xtr[m].mean(0) - Xtr[~m].mean(0)); irr_names.append(f"topic:{tpc}")
+    irr_au = [P.auroc(X[I["d2_te"]] @ w, lab[I["d2_te"]]) for w in irr]
+    R["irrelevant_dirs_d2_auroc"] = dict(zip(irr_names, irr_au))
+    R["irrelevant_dirs_max_dev"] = float(np.max(np.abs(np.array(irr_au) - 0.5)))
+    _obs = abs(P.auroc(X[I["d2_te"]] @ v1, lab[I["d2_te"]]) - 0.5)
+    R["irrelevant_dirs_frac_as_strong"] = float(np.mean(np.abs(np.array(irr_au) - 0.5) >= _obs))
     Bas, sv = P.orth_basis(np.stack(vecs))
     deconf_basis[j] = Bas
     R["subspace_rank"] = int(len(Bas))
@@ -182,8 +220,26 @@ for emo in ("grief", "joy", "fear", "anger"):
     per_emotion[emo] = P.summarize(dm.score(X[idx]), lab[idx], items[idx], thr=dm.thr)
     per_emotion[emo]["n_pairs"] = len(its)
 
+# length-only baseline (exploratory): does prompt length alone separate D2 emotional vs neutral?
+from transformers import AutoTokenizer
+_tok = AutoTokenizer.from_pretrained(a.model)
+length_baseline = {}
+for name in ("d2_test", "d2_train", "d1_test"):
+    idx = EVAL_SETS[name]
+    nt = np.array([len(_tok(((ex[k]["system"] or "") + " " + ex[k]["user"]).strip(), add_special_tokens=False)["input_ids"])
+                   for k in idx], float)
+    length_baseline[name] = P.summarize(nt, lab[idx], items[idx])
+# length-residualised D1->D2 transfer at every layer (exploratory): regress the D1-direction score on token count
+# (pooled D2 test), then AUROC of the residual.
+nt2 = np.array([len(_tok(ex[k]["user"], add_special_tokens=False)["input_ids"]) for k in I["d2_te"]], float)
+A_ = np.stack([nt2, np.ones_like(nt2)], 1)
+for j in range(J):
+    s = np.asarray(acts[I["d2_te"], j, :], dtype=np.float32) @ P.unit(dirs["d1"][j])
+    resid = s - A_ @ np.linalg.lstsq(A_, s, rcond=None)[0]
+    layers[j]["md:d2_test_len_resid"] = P.summarize(resid, lab[I["d2_te"]], items[I["d2_te"]])
+
 out = dict(model=a.model, n_blocks=L, d_model=D, control_label_agreement_with_true=ctrl_agree,
-           control_of_paraphrase=ctrl_of_para, steer_layer=steer_layer, steer_layer_candidates=cand,
+           control_seed=ctrl_seed, control_of_type=ctrl_of_para, length_baseline_auroc=length_baseline, steer_layer=steer_layer, steer_layer_candidates=cand,
            steer_layer_candidate_auroc_d2_train=au, lexical_baseline=lexical, per_emotion_at_steer_layer=per_emotion,
            cos_matrix_d1_rows_d2_cols=cosmat.tolist(), layers=layers, k_list=K_LIST)
 (RESULTS / S).mkdir(parents=True, exist_ok=True)
